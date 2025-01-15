@@ -1,0 +1,34 @@
+<simulation verbosity='high'>
+  <output prefix='simu'>
+    <properties stride='4' filename='out'>  [ step, time{picosecond}, conserved{electronvolt}, temperature{kelvin}, kinetic_cv{electronvolt}, potential{electronvolt}, atom_x{angstrom}(atom=500), atom_x{angstrom}(atom=501), atom_v{atomic_unit}(atom=500), atom_v{atomic_unit}(atom=501) ] </properties>
+    <trajectory filename='xc' stride='4' format='xyz'> x_centroid{angstrom} </trajectory>
+    <checkpoint filename='checkpoint' stride='4' overwrite='True'/>
+  </output>
+  <total_steps>40000</total_steps>
+  <prng>
+    <seed>31415</seed>
+  </prng>
+  <ffcavphsocket name='lammps' mode='unix' pbc='False'>
+    <address>mesitylene-pimd.1</address>
+  </ffcavphsocket>
+  <system>
+    <initialize nbeads='1'>
+      <file mode='chk'> RESTART </file>
+      <velocities mode='thermal' units='kelvin'> 110 </velocities>
+    </initialize>
+    <forces>
+      <force forcefield='lammps'> </force>
+    </forces>
+    <motion mode='dynamics'>
+        <dynamics mode='nvt'>
+          <timestep units='femtosecond'> 0.5 </timestep>
+          <thermostat mode='cavloss_langevin'>
+             <tau units='femtosecond'> 750 </tau>
+          </thermostat>
+        </dynamics>
+    </motion>
+    <ensemble>
+      <temperature units='kelvin'> 110 </temperature>
+    </ensemble>
+  </system>
+</simulation>
