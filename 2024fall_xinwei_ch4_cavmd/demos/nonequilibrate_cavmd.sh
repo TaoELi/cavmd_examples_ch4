@@ -4,9 +4,11 @@ E0=6e-4
 traj=1
 echo "run single nonequilibrium NVE simulation for nmol=$nmol, E0=$E0, traj=$traj, amp=$amp"
 
-HOMEFOLDER=/path/to/demos/"$nmol"/E0_$E0
+CURRENTFOLDER=$(pwd)
+TOTALFOLDER=$CURRENTFOLDER/"$nmol"
+HOMEFOLDER=$TOTALFOLDER/E0_$E0
 ORIGINFOLDER=$HOMEFOLDER/running_input_$E0
-CHECKPOINTFOLDER=$HOMEFOLDER/checkpoint
+CHECKPOINTFOLDER=$TOTALFOLDER/checkpoint
 INPUTFOLDER=$HOMEFOLDER/noneq_running_input_"$E0"
 
 if [ "$traj" = 1 ]; then
@@ -77,9 +79,9 @@ cd $NVEFOLDER
 
 rm -rf /tmp/ipi_ch4.E0_$E0.traj_noneq_"$amp"_$traj
 i-pi input_traj.xml & > output.output &
-sleep 60s
+sleep 10s
 lmp < in.lmp
-sleep 60s
+sleep 10s
             
 cd $HOMEFOLDER
 mv $NVEFOLDER/simu_noneq_"$amp"_$traj.xc.xyz $NVEXYZ

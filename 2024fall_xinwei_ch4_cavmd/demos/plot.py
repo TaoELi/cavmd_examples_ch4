@@ -49,10 +49,12 @@ def plot():
     color_list = ['violet', 'blue', 'green', 'greenyellow', 'gold', 'orange', 'red', 'brown', 'black', 'cyan']
     ax = clp.initialize(1, 1, width=4.3, height=4.3*0.618*1.1, LaTeX=False)
 
-    data1 = np.loadtxt(f'./data/noneqcoord_1/simu_noneq_6e-3_1.xc.xyz.scoord.txt')
-    data2 = np.loadtxt(f'./data/coord_1/simu_1.xc.xyz.scoord.txt')
+    data1 = np.loadtxt(f'./400/E0_6e-4/noneqcoord/simu_noneq_6e-3_1.xc.xyz.scoord.txt')[:2501,:]
+    data2 = np.loadtxt(f'./400/E0_6e-4/coord/simu_1.xc.xyz.scoord.txt')[:2501,:]
+    #data1 = np.loadtxt(f'./data/noneqcoord_40/simu_noneq_6e-3_1.xc.xyz.scoord.txt')[:2501,:]
+    #data2 = np.loadtxt(f'./data/coord_40/simu_1.xc.xyz.scoord.txt')[:2501,:]
     row, col = np.shape(data2)
-    te  = np.linspace(0, 20, row)
+    te  = np.linspace(0, 5, row)
     ref = np.mean(data2, axis=0)
     y1  = 1 * (data1[:,0] / ref[0] - 1)
     y2  = 2 * ((data1[:,1] + data1[:,2]) / (ref[1] + ref[2]) - 1)
@@ -63,12 +65,12 @@ def plot():
     colors_local = [color_list[7], color_list[8], color_list[9], color_list[6]]
     labels_local = [r"v$_%d$" %i for i in range(1,5)]
     ax.axvspan(xmin=0.1, xmax=0.6, ymin=0, ymax=15, color='orange', alpha=0.3)
-    ax.set_xticks([0,5,10,15,20])
+    ax.set_xticks([0,1,2,3,4,5])
     ax.set_yticks([0,4,8,12,16])
     clp.plotone(xs, ys, ax, colors=colors_local, labels=labels_local, lw=1, showlegend=True, legendloc=(0.7, 0.5),
-                xlabel="time [ps]", ylabel=r"energy gain [$\mathrm{k_BT}$]", xlim=[0, 20], ylim=[-0.1,16])
+                xlabel="time [ps]", ylabel=r"energy gain [$\mathrm{k_BT}$]", xlim=[0, 5], ylim=[-0.1,16])
     
-    clp.adjust(savefile=f'./plot.png', tight_layout=True)
+    clp.adjust(savefile=f'./figure.png', tight_layout=True)
 
 if __name__ == "__main__":
     plot()
