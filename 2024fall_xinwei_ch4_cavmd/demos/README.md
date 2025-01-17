@@ -59,7 +59,7 @@ This takes about 1 minute to finish.
 
 **Plotting**:
 
-Change the lines 52-53 to your square symmetry coordinate trajectories path, data1 is nonequilibrium trajectory and data2 is equilibrium trajectory. In /demos/data/ folder, the averaged 40 trajectories results (in coord_40 and noneqcoord_40) are also provided.
+In plot.py file, data1 is nonequilibrium trajectory and data2 is equilibrium trajectory. In /demos/data/ folder, the averaged 40 trajectories results (in coord_40 and noneqcoord_40) are also provided.
 
 ```python
 data1 = np.loadtxt(f'./400/E0_6e-4/noneqcoord/simu_noneq_6e-3_1.xc.xyz.scoord.txt')[:2501,:]
