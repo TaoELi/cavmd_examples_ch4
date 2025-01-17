@@ -59,7 +59,7 @@ This takes about 1 minute to finish.
 
 **Plotting**:
 
-In plot.py file, data1 is nonequilibrium trajectory and data2 is equilibrium trajectory. In /demos/data/ folder, the averaged 40 trajectories results (in coord_40 and noneqcoord_40) are also provided.
+In plot.py file, data1 is nonequilibrium trajectory and data2 is equilibrium trajectory. In /demos/data/ folder, the averaged 40 trajectories results (in coord_40 and noneqcoord_40) are also provided. In both equilibrium and nonequilibrium simulation, total simulation time and simulation step for printing xyz files are set as 5 ps and 2 fs, which means the trajectories contain 2501 geometries (including the initial geometries).
 
 ```python
 data1 = np.loadtxt(f'./400/E0_6e-4/noneqcoord/simu_noneq_6e-3_1.xc.xyz.scoord.txt')[:2501,:]
