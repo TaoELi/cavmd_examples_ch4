@@ -2,8 +2,8 @@ import numpy as np
 import columnplots as clp
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
-from scipy.optimize import curve_fit as fit
 import matplotlib.patches as mpatches
+import PIL.Image as image
 
 def smooth(x,window_len=11,window='hamming'):
     """smooth the data using a window with requested size.
@@ -624,6 +624,146 @@ def get_s14():
         
     clp.adjust(savefile=f'./si_figure/s14.png', tight_layout=False)
 
+def plot_IR():
+    ax = clp.initialize(1, 1, width=4.3*0.618*0.618*2, height=4.3*0.618*2.2, LaTeX=True, fontsize=10)
+    xs, ys = [], []
+    e0list = [0,6]
+    for e0 in range(len(e0list)):
+        data = np.loadtxt(f'./plotting_data/ml_100_ch4/ml_100_ch4_E0_{e0list[e0]}e-4.out')
+        x, y = data[:,5], (data[:,6] + data[:,7])/2e28
+        interval = np.where(x<2000)[0]
+        ymax = abs(y[interval]).max()
+        y = y / ymax * 0.8 + e0
+        xs.append(x[interval])
+        ys.append(y[interval])
+    clp.plotone(xs, ys, ax, lw=1.5, 
+                xlim=[800, 1800], ylim=[-0.2,2], 
+                xlabel=r"frequency [cm$^{-1}$]", ylabel="IR intensity [arb. units]", 
+                showlegend=False,
+                colorMap=plt.cm.hot, colorMap_endpoint=0.6)
+    
+    cadjust_colors = [plt.cm.hot(i) for i in np.linspace(0, 0.6, 2)]
+    ax.text(1330, 0.3, "outside cavity", fontsize=12, color=cadjust_colors[0])
+    ax.text(1030, 1.3, r"$\widetilde{\varepsilon}=6.0\times 10^{-4}$ a.u.", fontsize=12, color=cadjust_colors[1])
+    ax.set_yticks([0,1,2])
+    ax.axvline(x=1254.4, linestyle='-.', alpha=0.2)
+    ax.axvline(x=1453.0, linestyle='-.', alpha=0.2)
+    #ax.axvline(x=1581.4, linestyle='-.', alpha=0.2)
+    ax.text(1380, 1.9, "$v_2$", fontsize=12, color="0.5")
+    ax.text(1180, 1.9, "$v_4$", fontsize=12, color="0.5")
+    #ax.text(1495, 1.89, "UP", fontsize=10, color="0.5")
+    plt.rcParams["axes.axisbelow"] = False
+    ax.text(0.12, 0.98, "(a)", transform=ax.transAxes, fontsize=12, fontweight='bold', va='top', ha='right', color="k")
+    clp.adjust(savefile=f"./si_figure/temp1_s15.png")
+
+def get_temp():
+    cmap = plt.colormaps["plasma"]
+    cmap = cmap.with_extremes(bad=cmap(0))
+    labels = [r"$\widetilde{\varepsilon}=%d\times 10^{-4}$ a.u." %n for n in range(11)]
+    axes = clp.initialize(2, 2, width=4.3*2, height=4.3*0.618*2.2, LaTeX=True, fontsize=10)
+
+    te = np.linspace(0, 15, 16)
+    ye1 = np.zeros((60,16))
+    for time in range(16):
+
+        data0 = np.loadtxt(f'./plotting_data/ml_100_ch4/noneqaac_ml_{time}.out')
+        
+        x1, y1 = data0[:,2], data0[:,3]/1e28
+        large_list = np.where(x1>1150)[0]
+        small_list = np.where(x1[large_list]<1550)[0]
+        xe = x1[large_list][small_list]
+        ye1[:,time] = y1[large_list][small_list]
+
+    Ridx = np.where(xe>1350)[0]
+    Iidx = np.where(xe<1350)[0]
+    yR1 = np.sum(ye1[Ridx,:],axis=0)
+    yI1 = np.sum(ye1[Iidx,:],axis=0) 
+
+    xs = [te]*2
+    ys = [yI1, yR1]
+    colors_local = ["r-o", "k-o"]
+    labels = ["1254.4 cm$^{-1}$ $v_4$", "1453.0 cm$^{-1}$ $v_2$"]
+    axes[0,1].set_yticks([0,0.5,1,1.5])
+    clp.plotone(xs, ys, axes[0,1], colors=colors_local, labels=labels, lw=1, showlegend=True,
+                ylabel="intensity [arb. units]", ylim=[0, 1.5], xlim=[0, 15], legendFontSize=8, legendloc=(0.3, 0.1))
+
+    clp.plotone([], [], axes[0,0], ylabel="frequency [cm$^{-1}$]", showlegend=False)
+    pcolor = axes[0,0].pcolormesh(te, xe, ye1, norm=colors.LogNorm(vmin=0.01, vmax=0.19), shading='gouraud', cmap=cmap)
+    axes[0,0].set_yticks([1150,1250,1350,1450,1550])
+    rect1 = mpatches.Rectangle((0.1,1350),14.8,195, fill=False,color="c",linewidth=2, linestyle='--')
+    rect2 = mpatches.Rectangle((0.1,1150),14.8,195, fill=False,color="w",linewidth=2, linestyle='--')
+    axes[0,0].add_patch(rect1)
+    axes[0,0].add_patch(rect2)
+
+    data1 = np.loadtxt(f'./plotting_data/ml_100_ch4/noneqcoord_6e-4.out')[:7501,:]
+    data2 = np.loadtxt(f'./plotting_data/ml_100_ch4/eqcoord_6e-4.out')[:7501,:]
+    row, col = np.shape(data2)
+    te  = np.linspace(0, 15, row)
+    ref = np.mean(data2, axis=0)
+    y2  = 2 * ((data1[:,1] + data1[:,2]) / (ref[1] + ref[2]) - 1)
+    y4  = 3 * ((data1[:,6] + data1[:,7] + data1[:,8]) / (ref[6] + ref[7] + ref[8]) - 1)
+    xs = [te, te]
+    ys = [smooth(y4), smooth(y2)]
+    colors_local = ['red', 'black']
+    labels_local = labels = ["1254.4 cm$^{-1}$ $v_4$", "1453.0 cm$^{-1}$ $v_2$"]
+    axes[1,0].axvspan(xmin=0.1, xmax=0.6, ymin=0, ymax=15, color='orange', alpha=0.3)
+    axes[1,0].set_yticks([0,4,8,12,16])
+    clp.plotone(xs, ys, axes[1,0], colors=colors_local, labels=labels_local, lw=1, showlegend=True, legendloc=(0.55, 0.45),
+                xlabel="time [ps]", ylabel=r"energy gain [$\mathrm{k_BT}$]", xlim=[0, 15], ylim=[-0.1,16], legendFontSize=8)
+    
+    data3 = np.loadtxt(f'./plotting_data/ml_100_ch4/noneqcoord_6e-4_100_cf.out')[:7501,:]
+    data4 = np.loadtxt(f'./plotting_data/ml_100_ch4/eqcoord_6e-4_100_cf.out')[:7501,:]
+    row, col = np.shape(data2)
+    te  = np.linspace(0, 15, row)
+    ref = np.mean(data4, axis=0)
+    y2  = 2 * ((data3[:,1] + data3[:,2]) / (ref[1] + ref[2]) - 1)
+    y4  = 3 * ((data3[:,6] + data3[:,7] + data3[:,8]) / (ref[6] + ref[7] + ref[8]) - 1)
+    xs = [te, te]
+    ys = [smooth(y4), smooth(y2)]
+    colors_local = ['red', 'black']
+    labels_local = labels = ["1312.8 cm$^{-1}$ $v_4$", "1509.7 cm$^{-1}$ $v_2$"]
+    axes[1,1].axvspan(xmin=0.1, xmax=0.6, ymin=0, ymax=15, color='orange', alpha=0.3)
+    axes[1,1].set_yticks([0,4,8,12,16])
+    clp.plotone(xs, ys, axes[1,1], colors=colors_local, labels=labels_local, lw=1, showlegend=True, legendloc=(0.55, 0.45),
+                xlabel="time [ps]", ylabel=r"energy gain [$\mathrm{k_BT}$]", xlim=[0, 15], ylim=[-0.1,16], legendFontSize=8)
+
+    # add label of the figures
+    x0, y0 = 0.98, 0.95
+    label1List = ["(b)", "(c)"]
+    label2List = ["(d)", "(e)"]
+    epsilonList = [r"$\widetilde{\varepsilon} = 6.0\times 10^{-4}$ a.u."]
+    couplingList = [r"excite UP = 1581.4 cm$^{-1}$"]
+    text1 = r"$N_{\rm{simu}=100}$ , $\widetilde{\varepsilon} = 6.0\times 10^{-4}$ a.u." + "\n" + r"excite UP = 1581.4 cm$^{-1}$" + "\nML"
+    text2 = r"$N_{\rm{simu}=100}$ , $\widetilde{\varepsilon} = 6.0\times 10^{-4}$ a.u." + "\n" + r"excite UP = 1619.8 cm$^{-1}$" + "\nCOMPASS"
+    for i in range(2):
+        axes[1,i].text(x0, y0, label2List[i], transform=axes[1,i].transAxes, fontsize=12, fontweight='bold', va='top', ha='right', color="k")
+    axes[1,0].text(0.07, y0, text1, transform=axes[1,0].transAxes, fontsize=12, fontweight='bold', va='top', ha='left', color="k")
+    axes[1,1].text(0.07, y0, text2, transform=axes[1,1].transAxes, fontsize=12, fontweight='bold', va='top', ha='left', color="k")
+    axes[0,0].text(x0, y0, label1List[0], transform=axes[0,0].transAxes, fontsize=12, fontweight='bold', va='top', ha='right', color="w")
+    axes[0,1].text(x0, y0, label1List[1], transform=axes[0,1].transAxes, fontsize=12, fontweight='bold', va='top', ha='right', color="k")    
+    axes[0,0].text(0.07, y0, couplingList[0], transform=axes[0,0].transAxes, fontsize=12, fontweight='bold', va='top', ha='left', color="w")
+    axes[0,0].text(0.07, 0.12, epsilonList[0], transform=axes[0,0].transAxes, fontsize=12, fontweight='bold', va='top', ha='left', color="w")
+    
+    axes[0,0].set_xticks([])
+    axes[0,1].set_xticks([])
+    axes[1,0].set_xticks([0,5,10,15])
+    axes[1,1].set_xticks([0,5,10,15])
+
+    clp.adjust(savefile=f'./si_figure/temp2_s15.png', tight_layout=False)
+
+def get_s15():
+
+    plot_IR()
+    get_temp()
+    fig1 = image.open('./si_figure/temp1_s15.png')
+    fig2 = image.open('./si_figure/temp2_s15.png')
+
+    fix_size = 923
+    new_fig = image.new("RGB", (fix_size+fig2.width, max(fig1.height,fig2.height)), (255,255,255))
+    new_fig.paste(fig1, (0, max(fig1.height,fig2.height)-fig1.height))
+    new_fig.paste(fig2, (fix_size, max(fig1.height,fig2.height)-fig2.height))
+    new_fig.save('./si_figure/s15.png')
+
 if __name__ == "__main__":
     get_s1()
     get_s2()
@@ -639,3 +779,4 @@ if __name__ == "__main__":
     get_s12()
     get_s13()
     get_s14()
+    get_s15()
