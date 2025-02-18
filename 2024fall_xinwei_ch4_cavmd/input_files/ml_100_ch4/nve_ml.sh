@@ -68,7 +68,7 @@ if [ ! -d $NVEFOLDER ]; then
     cd $NVEFOLDER
     sed -i "s/mesitylene-pimd.1/ch4.E0_$E0.traj_noneq_"$amp"_$traj/" input_traj.xml
     sed -i "s/mesitylene-pimd.1/ch4.E0_$E0.traj_noneq_"$amp"_$traj/" in.lmp
-    sed -i "s/RESTART/simu_nve_"$traj".checkpoint/" input_traj.xml
+    sed -i "s/RESTART/init_nvt_"$traj".checkpoint/" input_traj.xml
     sed -i "s/'simu'/'simu_nve_6e-4_$traj'/g" input_traj.xml
 
 fi
