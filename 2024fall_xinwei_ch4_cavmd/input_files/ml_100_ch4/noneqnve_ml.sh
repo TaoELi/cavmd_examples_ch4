@@ -12,7 +12,7 @@
 
 amp=6e-3
 nmol=100
-E0=0e-4
+E0=6e-4
 traj=1
 echo "running nonequilibrate NVE for nmol=$nmol, E0=$E0, traj=$traj"
 
