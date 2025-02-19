@@ -1,0 +1,38 @@
+units metal
+atom_style full
+boundary p p p
+timestep 0.0001 # 0.1 fs
+
+read_data data.lmp
+#change_box all x final 0.0 18.36 y final 0.0 18.36 z final 0.0 18.36
+
+pair_style hybrid/overlay lj/cut 15.0 table linear 10000 quip
+pair_coeff * * quip gp-mebox-pbe0-ts-mbd.xml "Potential xml_label=GAP_mid_range" 6 1
+special_bonds lj 0.9999999 0.9999999 0.9999999
+
+#pair_style lj/cut/coul/long 10.0
+#kspace_style	pppm 0.0001
+
+# PBE0 dispersion coefficients
+pair_coeff 1 1 lj/cut 0.0157997331342 2.5 # C-C
+pair_coeff 1 2 lj/cut 0.0183438934967 2.0 # C-H
+pair_coeff 2 2 lj/cut 1.36550383615 0.8 # H-H
+pair_coeff 1 1 table dispersion-ts-lj-pbe0.table CC_CORRECTION
+pair_coeff 1 2 table dispersion-ts-lj-pbe0.table CH_CORRECTION
+pair_coeff 2 2 table dispersion-ts-lj-pbe0.table HH_CORRECTION
+pair_modify pair lj/cut special lj 0.0 0.0 0.0
+pair_modify pair lj/cut shift no tail yes
+
+# COMPASS intramol parameters for methane (Sun 1998)
+# Converted to eV
+bond_style class2
+bond_coeff 1 1.101 14.9606 -30.0032 36.6253 # c4-h1
+angle_style class2
+angle_coeff 1 107.6 1.71900 -0.532989 -0.105453 # h1-c4-h1
+angle_coeff 1 bb 0.231200 1.101 1.101
+angle_coeff 1 ba 0.785020 0.785020 1.101 1.101
+
+#fix 1 all ipi 127.0.0.3 32345 reset
+fix 1 all ipi mesitylene-pimd.1 32345 unix
+
+run 5000000 # just needs to be larger than the number of steps in an i-pi simulation
