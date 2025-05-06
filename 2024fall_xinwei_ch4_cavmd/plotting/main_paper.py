@@ -90,18 +90,18 @@ def plot_IR():
     
     cadjust_colors = [plt.cm.hot(i) for i in np.linspace(0, 0.6, 11)]
     for e0 in range(11):
-        if e0 == 0 : ax.text(2000, 0.3, "outside cavity", fontsize=8, color=cadjust_colors[e0])
-        elif e0 == 1 : ax.text(2000, e0+0.3, r"$\widetilde{\varepsilon}=5.0\times 10^{-5}$ a.u.", fontsize=8, color=cadjust_colors[e0])
-        else: ax.text(2000, e0+0.3, r"$\widetilde{\varepsilon}=%.1f\times 10^{-4}$ a.u." %(e0/2), fontsize=8, color=cadjust_colors[e0])
+        if e0 == 0 : ax.text(2000, 0.3, "outside cavity", fontsize=10, color=cadjust_colors[e0])
+        elif e0 == 1 : ax.text(2000, e0+0.3, r"$\widetilde{\varepsilon}=5.0\times 10^{-5}$ a.u.", fontsize=10, color=cadjust_colors[e0])
+        else: ax.text(2000, e0+0.3, r"$\widetilde{\varepsilon}=%.1f\times 10^{-4}$ a.u." %(e0/2), fontsize=10, color=cadjust_colors[e0])
 
     ax.axvline(x=2902.6, linestyle='-.', alpha=0.2)
     ax.axvline(x=1509.7, linestyle='-.', alpha=0.2)
     ax.axvline(x=3004.3, linestyle='-.', alpha=0.2)
     ax.axvline(x=1312.8, linestyle='-.', alpha=0.2)
-    ax.text(2875, 11.3, "$v_1$", fontsize=8, color="0.5")
-    ax.text(1480, 11.3, "$v_2$", fontsize=8, color="0.5")
-    ax.text(2975, 11.3, "$v_3$", fontsize=8, color="0.5")
-    ax.text(1285, 11.3, "$v_4$", fontsize=8, color="0.5")
+    ax.text(2875, 11.3, "$v_1$", fontsize=10, color="0.5")
+    ax.text(1480, 11.3, "$v_2$", fontsize=10, color="0.5")
+    ax.text(2975, 11.3, "$v_3$", fontsize=10, color="0.5")
+    ax.text(1285, 11.3, "$v_4$", fontsize=10, color="0.5")
     plt.rcParams["axes.axisbelow"] = False
     clp.adjust(savefile=f"./main_paper_figure/110k_eq_n400v0.png")
 
@@ -139,7 +139,7 @@ def get_polariton_freq():
 
     figure, ax = clp.initialize(1, 1, width=4.3, height=4.3*0.618, return_fig_args=True, fontsize=12, LaTeX=True)    
     clp.plotone(fx, kx, ax, labels=labels, lw=1.5, xlabel=r"UP frequency [cm$^{-1}$]", ylabel="UP decay rate [ps$^{-1}$]",
-                xlim=[1280,1850], ylim=[0, 3], legendFontSize=8, legendloc=(0.6,0.7), colors=["k--o", "m--o", "r--o"])
+                xlim=[1280,1850], ylim=[0, 3], legendFontSize=9, legendloc=(0.55,0.65), colors=["k--o", "m--o", "r--o"])
 
     ax.axvline(x=1311.2, linestyle='-.', color='k', alpha=0.5)
     ax.axvline(x=1509.7, linestyle='-.', color='k', alpha=0.5)
@@ -164,7 +164,7 @@ def get_figure1():
     figd = image.open('./main_paper_figure/photonic_life_n400v0.png')
     fige = image.open('./main_paper_figure/ch4_polariton_mechanism.png')
  
-    regiona = figa.crop((1000, 1150, 4000, 3750))
+    regiona = figa.crop((60, 136, 888, 836))
     regionb = figb.crop((350, 500, 3750, 2100))
     regiona_image = regiona.resize((1846,1600))
     new_figup = image.new("RGB", (regiona_image.width+regionb.width, regionb.height))
@@ -256,8 +256,8 @@ def get_figure2():
         labels_local = [r"v$_%d$" %i for i in range(1,5)]
         axes[2,i].axvspan(xmin=0.1, xmax=0.6, ymin=0, ymax=15, color='orange', alpha=0.3)
         axes[2,i].set_yticks([0,4,8,12,16])
-        clp.plotone(xs, ys, axes[2,i], colors=colors_local, labels=labels_local, lw=1, showlegend=True if i == 4 else False, legendloc=(0.7, 0.37),
-                    xlabel="time [ps]", ylabel=r"energy gain [$\mathrm{k_BT}$]" if i == 0 else None, xlim=[0, 15], ylim=[-0.1,16], legendFontSize=6)
+        clp.plotone(xs, ys, axes[2,i], colors=colors_local, labels=labels_local, lw=1, showlegend=True if i == 4 else False, legendloc=(0.5, 0.4),
+                    xlabel="time [ps]", ylabel=r"energy gain [$\mathrm{k_BT}$]" if i == 0 else None, xlim=[0, 15], ylim=[-0.1,16], legendFontSize=7)
 
     # add label of the figures
     x0, y0 = 0.98, 0.97
@@ -273,7 +273,7 @@ def get_figure2():
         axes[1, i].text(x0, y0, label2List[i], transform=axes[1, i].transAxes, fontsize=12, fontweight='bold', va='top', ha='right', color="k")
         axes[2, i].text(x0, y0, label3List[i], transform=axes[2, i].transAxes, fontsize=12, fontweight='bold', va='top', ha='right', color="k")
         axes[0, i].text(x0-0.15, y0-0.02, couplingList[i], transform=axes[0, i].transAxes, fontsize=9, fontweight='bold', va='top', ha='right', color="w")
-        axes[0, i].text(x0-0.15, 0.13, epsilonList[i], transform=axes[0, i].transAxes, fontsize=9, fontweight='bold', va='top', ha='right', color="w")
+        axes[0, i].text(x0-0.12, 0.13, epsilonList[i], transform=axes[0, i].transAxes, fontsize=10, fontweight='bold', va='top', ha='right', color="w")
     
     # remove numbers on the y axis 
     for i in range(len(e0list)):
@@ -395,118 +395,9 @@ def get_figure3():
     draw_new_fig.text((10+fig1.width, 0), "(b)", font=font_new_fig, fill='black')
     new_fig.save('./main_paper_figure/figure3.png')
 
-def plot_fix_IR():
-    ax = clp.initialize(1, 1, width=4.3, LaTeX=True, fontsize=12)
-    xs, ys = [], []
-    for e0 in range(9):
-        data = np.loadtxt(f'./plotting_data/eqloss_n400v0_110k_fix/cavity_loss_eqdac_fix_freqidx_{e0+1}.out')
-        x, y = data[:,5], (data[:,6] + data[:,7])/2e28
-        #x, y = data[:,2], data[:,3]/1e28
-        interval = np.where(x<3300)[0]
-        ymax = abs(y[interval]).max()
-        y = y / ymax * 0.8 + e0
-        xs.append(x[interval])
-        ys.append(y[interval])
-
-    clp.plotone(xs, ys, ax, lw=1.5, 
-                xlim=[750, 3300], ylim=[-0.2,9], 
-                xlabel=r"frequency [cm$^{-1}$]", ylabel="IR intensity [arb. units]", 
-                showlegend=False,
-                colorMap=plt.cm.hot, colorMap_endpoint=0.6)
-    
-    cadjust_colors = [plt.cm.hot(i) for i in np.linspace(0, 0.6, 11)]
-
-    epsilon = 0.5 * np.array([6.3014, 6.2146, 6.0648, 5.8287, 5.4955, 5.0427, 4.3965, 3.4637, 1.8238])
-    for e0 in range(9):
-        plt.annotate('', xy=(1200+50*e0, e0), xytext=(1200+50*e0, e0+0.8), arrowprops=dict(facecolor='blue', edgecolor='blue', arrowstyle='->', alpha=0.8), fontsize=8)
-        if e0 != 8 : ax.text(2000, e0+0.3, r"$\widetilde{\varepsilon}=%.2f\times 10^{-4}$ a.u." %epsilon[e0], fontsize=8, color=cadjust_colors[e0])
-        else : ax.text(2000, e0+0.3, r"$\widetilde{\varepsilon}=9.12\times 10^{-5}$ a.u." %epsilon[e0], fontsize=8, color=cadjust_colors[e0])
-    ax.text(1250, 0.3, r"$\omega_{\mathrm{c}}$", fontsize=10, color='blue', alpha=0.8)
-
-    ax.axvline(x=1619.8, linestyle='-.', alpha=0.2)
-    ax.text(1570, 9.2, "UP", fontsize=8, color="0.5")
-    plt.rcParams["axes.axisbelow"] = False
-    clp.adjust(savefile=f"./main_paper_figure/110k_eqloss_fix_n400v0.png")
-
-def plot_cavity_photon_energy():
-    UP_freq = [1619.77763771]*9
-    ang2au = 1.8897259886
-    cmn2au = 7.251632778606085e-7 * 2 * 3.1415926
-    kt2au = 3.483e-4
-    energy = np.zeros((9,4))
-    omega_c = np.array([1200, 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600])
-    energy[:,0] = omega_c
-    for i in range(len(omega_c)):
-        datanoneq = np.loadtxt(f'./plotting_data/photon_110k_6e-3_fix/noneq_gaussian_out_fix_freqidx_{i+1}.out')
-        xxanoneq, xybnoneq = datanoneq[:,6]*ang2au, datanoneq[:,10]*ang2au
-        vxanoneq, vybnoneq = datanoneq[:,12], datanoneq[:,16]
-        energy[i,1] = max(0.5 * (vxanoneq ** 2 + vybnoneq ** 2) + 0.5 * (xxanoneq ** 2 + xybnoneq ** 2) * (UP_freq[i] * cmn2au) ** 2) / (kt2au*400)
-        data1 = np.loadtxt(f'./plotting_data/110k_noneqcoord_6e-3_gaussian_fix/noneq_gaussian_coord_freqidx_{i+1}.out')
-        data2 = np.loadtxt(f'./plotting_data/110k_eqcoord_fix/cavity_loss_eqcoord_freqidx_{i+1}.out')
-        ref = np.mean(data2, axis=0)
-        y1  = 1 * (data1[:,0] / ref[0] - 1)
-        y2  = 2 * ((data1[:,1] + data1[:,2]) / (ref[1] + ref[2]) - 1)
-        y3  = 3 * ((data1[:,3] + data1[:,4] + data1[:,5]) / (ref[3] + ref[4] + ref[5]) - 1)
-        y4  = 3 * ((data1[:,6] + data1[:,7] + data1[:,8]) / (ref[6] + ref[7] + ref[8]) - 1)
-        energy[i,2] = max(y2)
-        energy[i,3] = max(y3+y2)
-
-    ax = clp.initialize(1, 1, width=4.3, LaTeX=True, fontsize=12, sharey=False)
-    xs = [energy[:,0]]*1
-    ys = [energy[:,1]]
-    colors=["orange"]
-    linestyles=["-"]*1
-    markers=['o']*1
-    labels=[r"photon / $N_{\rm{simu}}$"]
-    clp.plotone(xs, ys, ax, colors=colors, linestyles=linestyles, markers=markers, labels=labels, lw=1, showlegend=True,
-                xlabel=r"$\omega_{\mathrm{c}}$ [cm$^{-1}$]", ylabel=r"energy gain [k$_{\mathrm{B}}$T]", xlim=[1190,1610], ylim=[0,10], legendFontSize=8)
-    
-    ax.set_xticks([1200,1250,1300,1350,1400,1450,1500,1550,1600])
-    ax.set_yticks([0,2,4,6,8,10])
-    clp.adjust(savefile=f'./main_paper_figure/cavity_v2_energy_photon.png', tight_layout=False)
-
-def plot_cavity_v23_energy():
-    UP_freq = [1619.77763771]*9
-    ang2au = 1.8897259886
-    cmn2au = 7.251632778606085e-7 * 2 * 3.1415926
-    kt2au = 3.483e-4
-    energy = np.zeros((9,4))
-    omega_c = np.array([1200, 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600])
-    energy[:,0] = omega_c
-    for i in range(len(omega_c)):
-        datanoneq = np.loadtxt(f'./plotting_data/photon_110k_6e-3_fix/noneq_gaussian_out_fix_freqidx_{i+1}.out')
-        xxanoneq, xybnoneq = datanoneq[:,6]*ang2au, datanoneq[:,10]*ang2au
-        vxanoneq, vybnoneq = datanoneq[:,12], datanoneq[:,16]
-        energy[i,1] = max(0.5 * (vxanoneq ** 2 + vybnoneq ** 2) + 0.5 * (xxanoneq ** 2 + xybnoneq ** 2) * (UP_freq[i] * cmn2au) ** 2) / (kt2au*400)
-        data1 = np.loadtxt(f'./plotting_data/110k_noneqcoord_6e-3_gaussian_fix/noneq_gaussian_coord_freqidx_{i+1}.out')
-        data2 = np.loadtxt(f'./plotting_data/110k_eqcoord_fix/cavity_loss_eqcoord_freqidx_{i+1}.out')
-        ref = np.mean(data2, axis=0)
-        y1  = 1 * (data1[:,0] / ref[0] - 1)
-        y2  = 2 * ((data1[:,1] + data1[:,2]) / (ref[1] + ref[2]) - 1)
-        y3  = 3 * ((data1[:,3] + data1[:,4] + data1[:,5]) / (ref[3] + ref[4] + ref[5]) - 1)
-        y4  = 3 * ((data1[:,6] + data1[:,7] + data1[:,8]) / (ref[6] + ref[7] + ref[8]) - 1)
-        energy[i,2] = max(y2)
-        energy[i,3] = max(y3+y2)
-
-    ax = clp.initialize(1, 1, width=4.3, LaTeX=True, fontsize=12, sharey=False)
-    xs = [energy[:,0]]*2
-    ys = [energy[:,2],energy[:,3]]
-    colors=["k","m"]
-    linestyles=["-"]*2
-    markers=['o']*2
-    labels=[r"v$_2$", r"v$_2$+v$_3$"]
-    clp.plotone(xs, ys, ax, colors=colors, linestyles=linestyles, markers=markers, labels=labels, lw=1, showlegend=True,
-                xlabel=r"$\omega_{\mathrm{c}}$ [cm$^{-1}$]", ylabel=r"energy gain [k$_{\mathrm{B}}$T]", xlim=[1190,1610], ylim=[0,5], legendFontSize=8)
-    
-    ax.axvline(x=1465.5, linestyle='-.', color="0.5", alpha=0.5)
-    ax.text(1320, 0.75, r"$\omega_{\mathrm{c}}=1466$ cm$^{-1}$"+'\n'+r"max $|X_+^{(c)}|^4|X_+^{(B)}|^2$", fontsize=8, color="0.5")
-    ax.set_xticks([1200,1250,1300,1350,1400,1450,1500,1550,1600])
-    ax.set_yticks([0,1,2,3,4,5])
-    clp.adjust(savefile=f'./main_paper_figure/cavity_v2_energy_mol.png', tight_layout=False)
-
-def plot_compare_energy():
+def get_figure4():
     color_list   = ['violet', 'blue', 'green', 'greenyellow', 'gold', 'orange', 'red', 'brown', 'black', 'cyan']
-    axes = clp.initialize(1, 3, width=8.6, height=8.6/3*0.618*1.1, LaTeX=True, fontsize=11, sharey=True)
+    axes = clp.initialize(2, 3, width=4.3*3, height=4.3*0.618*1.1*2, LaTeX=True, fontsize=12)
     for i in range(3):
         data1 = np.loadtxt(f'./plotting_data/1500_cavity_loss_gaussian/noneqcoord_gaussian_{i}.out')
         data2 = np.loadtxt(f'./plotting_data/1500_cavity_loss_gaussian/eqcoord_gaussian_{i}.out')
@@ -521,93 +412,126 @@ def plot_compare_energy():
         ys = [smooth(y1), smooth(y2), smooth(y3), smooth(y4)]
         colors_local = [color_list[7], color_list[8], color_list[9], color_list[6]]
         labels_local = [r"v$_%d$" %i for i in range(1,5)]
-        axes[i].axvspan(xmin=1.75, xmax=2.25, ymin=0, ymax=15, color='orange', alpha=0.4)
-        axes[i].axvspan(xmin=1.25, xmax=2.75, ymin=0, ymax=15, color='orange', alpha=0.3)
-        axes[i].set_xticks([0,5,10,15,20])
-        axes[i].set_yticks([0,2,4,6])
-        clp.plotone(xs, ys, axes[i], colors=colors_local, labels=labels_local, lw=1, showlegend=True if i == 2 else False, legendloc=(0.7, 0.4),
-                    xlabel="time [ps]", ylabel=r"energy gain [$\mathrm{k_BT}$]" if i == 0 else None, xlim=[0, 20], ylim=[-0.1,6], legendFontSize=6)
+        axes[0,i].axvspan(xmin=1.75, xmax=2.25, ymin=0, ymax=15, color='orange', alpha=0.4)
+        axes[0,i].axvspan(xmin=1.25, xmax=2.75, ymin=0, ymax=15, color='orange', alpha=0.3)
+        axes[0,i].set_xticks([0,5,10,15,20])
+        axes[0,i].set_yticks([0,2,4,6])
+        clp.plotone(xs, ys, axes[0,i], colors=colors_local, labels=labels_local, lw=1, showlegend=True if i == 2 else False, legendloc=(0.7, 0.3),
+                    xlabel="time [ps]", ylabel=r"energy gain [$\mathrm{k_BT}$]" if i == 0 else None, xlim=[0, 20], ylim=[-0.1,6], legendFontSize=10)
 
     # add label of the figures
-    x0, y0 = 0.98, 0.97
     label1List = ["(a)", "(b)", "(c)"]
     couplingList = [r"excite UP = 1511 cm$^{-1}$", r"excite UP = 1510 cm$^{-1}$", r"excite $v_2$ = 1510 cm$^{-1}$"]
     labels = [r"$\omega_{\mathrm{c}}$ = 1311 cm$^{-1}$", r"$\omega_{\mathrm{c}}$ = 1500 cm$^{-1}$", ' ']
     varepsilon = [r"$\widetilde{\varepsilon}$ = $2.0\times 10^{-4}$ a.u.", r"$\widetilde{\varepsilon}$ = $5.0\times 10^{-5}$ a.u.", 'outside cavity']
     couplingList = [couplingList[i] + "\n" + varepsilon[i] + "\n" + labels[i] for i in range(3)]
     for i in range(3):
-        axes[i].text(x0, y0, label1List[i], transform=axes[i].transAxes, fontsize=12, fontweight='bold', va='top', ha='right', color="k")
-        axes[i].text(0.17, y0-0.02, couplingList[i], transform=axes[i].transAxes, fontsize=9, fontweight='bold', va='top', ha='left', color="k")
-        
-    clp.adjust(savefile=f'./main_paper_figure/strong_coupling_compare.png', tight_layout=False)
-
-def get_figure4():
+        axes[0,i].text(0.01, 0.98, label1List[i], transform=axes[0,i].transAxes, fontsize=12, fontweight='bold', va='top', ha='left', color="k")
+        axes[0,i].text(0.23, 0.96, couplingList[i], transform=axes[0,i].transAxes, fontsize=12, fontweight='bold', va='top', ha='left', color="k")
     
-    plot_fix_IR()
-    plot_cavity_photon_energy()
-    plot_cavity_v23_energy()
-    plot_compare_energy()
-    fig1 = image.open('./main_paper_figure/110k_eqloss_fix_n400v0.png')
-    fig2 = image.open('./main_paper_figure/cavity_v2_energy_photon.png')
-    fig3 = image.open('./main_paper_figure/cavity_v2_energy_mol.png')
-    fig4 = image.open('./main_paper_figure/strong_coupling_compare.png')
-    new_figup = fig4.resize((3557,1045))
-    new_figdown = image.new("RGB", (fig1.width+fig2.width+fig3.width, max(fig1.height,fig2.height,fig3.height)), (255,255,255))
-    new_figdown.paste(fig1, (0, max(fig1.height,fig2.height,fig3.height)-fig1.height))
-    new_figdown.paste(fig2, (fig1.width, max(fig1.height,fig2.height,fig3.height)-fig2.height))
-    new_figdown.paste(fig3, (fig1.width+fig2.width, max(fig1.height,fig2.height,fig3.height)-fig3.height))
-    new_fig = image.new("RGB", (new_figup.width, new_figup.height+new_figdown.height), (255,255,255))
-    new_fig.paste(new_figup, (0, 0))
-    new_fig.paste(new_figdown, (0, new_figup.height))
-    draw_new_fig = draw.Draw(new_fig)
-    font_new_fig = font.truetype('Arial.ttf', size=80)
-    draw_new_fig.text((10, new_figup.height-70), "(d)", font=font_new_fig, fill='black')
-    draw_new_fig.text((10+fig1.width, new_figup.height-70), "(e)", font=font_new_fig, fill='black')
-    draw_new_fig.text((10+fig1.width+fig2.width, new_figup.height-70), "(f)", font=font_new_fig, fill='black')
-    new_fig.save('./main_paper_figure/figure4.png')
+    xs, ys = [], []
+    for e0 in range(9):
+        data = np.loadtxt(f'./plotting_data/eqloss_n400v0_110k_fix/cavity_loss_eqdac_fix_freqidx_{e0+1}.out')
+        x, y = data[:,5], (data[:,6] + data[:,7])/2e28
+        #x, y = data[:,2], data[:,3]/1e28
+        interval = np.where(x<3300)[0]
+        ymax = abs(y[interval]).max()
+        y = y / ymax * 0.8 + e0
+        xs.append(x[interval])
+        ys.append(y[interval])
 
-def get_figure5():
-    color_list   = ['violet', 'blue', 'green', 'greenyellow', 'gold', 'orange', 'red', 'brown', 'black', 'cyan']
-    axes = clp.initialize(1, 5, width=12, height=12/5*0.618*1.1, LaTeX=True, fontsize=12, sharey=True)
-    for i in range(5):
-        data1 = np.loadtxt(f'./plotting_data/110k_noneqcoord_6e-3_gaussian_density/noeqcoord_gaussian_new_6e-3_110k_density_cavity_n400v{i}_E0_6e-4.out')
-        data2 = np.loadtxt(f'./plotting_data/110k_noneqcoord_6e-3_gaussian_density/eqcoord_110k_density_cavity_n400v{i}_E0_6e-4.out')
-        row, col = np.shape(data2)
-        te  = np.linspace(0, 20, row)
+    clp.plotone(xs, ys, axes[1,0], lw=1.5, 
+                xlim=[750, 3300], ylim=[-0.2,9], 
+                xlabel=r"frequency [cm$^{-1}$]", ylabel="IR intensity [arb. units]", 
+                showlegend=False,
+                colorMap=plt.cm.hot, colorMap_endpoint=0.6)
+    
+    cadjust_colors = [plt.cm.hot(i) for i in np.linspace(0, 0.6, 11)]
+
+    epsilon = 0.5 * np.array([6.3014, 6.2146, 6.0648, 5.8287, 5.4955, 5.0427, 4.3965, 3.4637, 1.8238])
+    for e0 in range(9):
+        axes[1,0].annotate('', xy=(1200+50*e0, e0), xytext=(1200+50*e0, e0+0.8), arrowprops=dict(facecolor='blue', edgecolor='blue', arrowstyle='->', alpha=0.8), fontsize=8)
+        if e0 != 8 : axes[1,0].text(1900, e0+0.3, r"$\widetilde{\varepsilon}=%.2f\times 10^{-4}$ a.u." %epsilon[e0], fontsize=10, color=cadjust_colors[e0])
+        else : axes[1,0].text(1900, e0+0.3, r"$\widetilde{\varepsilon}=9.12\times 10^{-5}$ a.u." %epsilon[e0], fontsize=10, color=cadjust_colors[e0])
+    axes[1,0].text(1250, 0.3, r"$\omega_{\mathrm{c}}$", fontsize=10, color='blue', alpha=0.8)
+    axes[1,0].set_xticks([1000,1500,2000,2500,3000])
+    axes[1,0].axvline(x=1619.8, linestyle='-.', alpha=0.2)
+    axes[1,0].text(1650, 8.2, "UP", fontsize=10, color="0.5")
+    axes[1,0].text(0.01, 0.98, "(d)", transform=axes[1,0].transAxes, fontsize=12, fontweight='bold', va='top', ha='left', color="k")
+    plt.rcParams["axes.axisbelow"] = False
+
+    UP_freq = [1619.77763771]*9
+    ang2au = 1.8897259886
+    cmn2au = 7.251632778606085e-7 * 2 * 3.1415926
+    kt2au = 3.483e-4
+    energy = np.zeros((9,4))
+    omega_c = np.array([1200, 1250, 1300, 1350, 1400, 1450, 1500, 1550, 1600])
+    energy[:,0] = omega_c
+    for i in range(len(omega_c)):
+        datanoneq = np.loadtxt(f'./plotting_data/photon_110k_6e-3_fix/noneq_gaussian_out_fix_freqidx_{i+1}.out')
+        xxanoneq, xybnoneq = datanoneq[:,6]*ang2au, datanoneq[:,10]*ang2au
+        vxanoneq, vybnoneq = datanoneq[:,12], datanoneq[:,16]
+        energy[i,1] = max(0.5 * (vxanoneq ** 2 + vybnoneq ** 2) + 0.5 * (xxanoneq ** 2 + xybnoneq ** 2) * (UP_freq[i] * cmn2au) ** 2) / (kt2au*400)
+        data1 = np.loadtxt(f'./plotting_data/110k_noneqcoord_6e-3_gaussian_fix/noneq_gaussian_coord_freqidx_{i+1}.out')
+        data2 = np.loadtxt(f'./plotting_data/110k_eqcoord_fix/cavity_loss_eqcoord_freqidx_{i+1}.out')
         ref = np.mean(data2, axis=0)
         y1  = 1 * (data1[:,0] / ref[0] - 1)
         y2  = 2 * ((data1[:,1] + data1[:,2]) / (ref[1] + ref[2]) - 1)
         y3  = 3 * ((data1[:,3] + data1[:,4] + data1[:,5]) / (ref[3] + ref[4] + ref[5]) - 1)
         y4  = 3 * ((data1[:,6] + data1[:,7] + data1[:,8]) / (ref[6] + ref[7] + ref[8]) - 1)
-        xs = [te, te, te, te]
-        ys = [smooth(y1), smooth(y2), smooth(y3), smooth(y4)]
-        colors_local = [color_list[7], color_list[8], color_list[9], color_list[6]]
-        labels_local = [r"v$_%d$" %i for i in range(1,5)]
-        axes[i].axvspan(xmin=1.75, xmax=2.25, ymin=0, ymax=15, color='orange', alpha=0.4)
-        axes[i].axvspan(xmin=1.25, xmax=2.75, ymin=0, ymax=15, color='orange', alpha=0.3)
-        axes[i].set_xticks([0,5,10,15,20])
-        axes[i].set_yticks([0,1,2,3])
-        clp.plotone(xs, ys, axes[i], colors=colors_local, labels=labels_local, lw=1, showlegend=True if i == 0 else False, legendloc=(0.7, 0.35),
-                    xlabel="time [ps]", ylabel=r"energy gain [$\mathrm{k_BT}$]" if i == 0 else None, xlim=[0, 20], ylim=[-0.1,3], legendFontSize=6)
+        energy[i,2] = max(y2)
+        energy[i,3] = max(y3+y2)
 
-    # add label of the figures
-    x0, y0 = 0.98, 0.97
-    label1List = ["(a)", "(b)", "(c)", "(d)", "(e)"]
-    uplist = [1619.8, 1619.8, 1619.8, 1619.8, 1619.8] # for density figure
-    coupling1List = [r"excite UP = %d cm$^{-1}$" %up for up in uplist]
-    density = [400/(2.9144683314136138**3*2**n) for n in range(5)]
-    labels = [r"$\rho = $ %.2f nm$^{-3}$" % density[i] for i in range(5)]
-    epsilon = [r"$\quad\widetilde{\varepsilon} = $ 3.0 $\times 10^{-4}$ a.u."]*5
-    coupling1List = [coupling1List[i] + "\n" + epsilon[i] + "\n" + labels[i] for i in range(5)]
-    for i in range(5):
-        axes[i].text(x0, y0, label1List[i], transform=axes[i].transAxes, fontsize=12, fontweight='bold', va='top', ha='right', color="k")
-        axes[i].text(0.05, y0-0.02, coupling1List[i], transform=axes[i].transAxes, fontsize=9, fontweight='bold', va='top', ha='left', color="k")
-        
-    clp.adjust(savefile=f'./main_paper_figure/figure5.png', tight_layout=False)
+    xs = [energy[:,0]]*1
+    ys = [energy[:,1]]
+    colors=["orange"]
+    linestyles=["-"]*1
+    markers=['o']*1
+    labels=[r"photon / $N_{\rm{simu}}$"]
+    clp.plotone(xs, ys, axes[1,1], colors=colors, linestyles=linestyles, markers=markers, labels=labels, lw=1, showlegend=True, legendloc=(0.26,0.84),
+                xlabel=r"$\omega_{\mathrm{c}}$ [cm$^{-1}$]", ylabel=r"energy gain [k$_{\mathrm{B}}$T]", xlim=[1190,1610], ylim=[0,10], legendFontSize=10)
+    
+    axes[1,1].set_xticks([1200,1300,1400,1500,1600])
+    axes[1,1].set_yticks([0,2,4,6,8,10])
+    axes[1,1].text(0.01, 0.98, "(e)", transform=axes[1,1].transAxes, fontsize=12, fontweight='bold', va='top', ha='left', color="k")
+    
+    energy = np.zeros((9,4))
+    energy[:,0] = omega_c
+    for i in range(len(omega_c)):
+        datanoneq = np.loadtxt(f'./plotting_data/photon_110k_6e-3_fix/noneq_gaussian_out_fix_freqidx_{i+1}.out')
+        xxanoneq, xybnoneq = datanoneq[:,6]*ang2au, datanoneq[:,10]*ang2au
+        vxanoneq, vybnoneq = datanoneq[:,12], datanoneq[:,16]
+        energy[i,1] = max(0.5 * (vxanoneq ** 2 + vybnoneq ** 2) + 0.5 * (xxanoneq ** 2 + xybnoneq ** 2) * (UP_freq[i] * cmn2au) ** 2) / (kt2au*400)
+        data1 = np.loadtxt(f'./plotting_data/110k_noneqcoord_6e-3_gaussian_fix/noneq_gaussian_coord_freqidx_{i+1}.out')
+        data2 = np.loadtxt(f'./plotting_data/110k_eqcoord_fix/cavity_loss_eqcoord_freqidx_{i+1}.out')
+        ref = np.mean(data2, axis=0)
+        y1  = 1 * (data1[:,0] / ref[0] - 1)
+        y2  = 2 * ((data1[:,1] + data1[:,2]) / (ref[1] + ref[2]) - 1)
+        y3  = 3 * ((data1[:,3] + data1[:,4] + data1[:,5]) / (ref[3] + ref[4] + ref[5]) - 1)
+        y4  = 3 * ((data1[:,6] + data1[:,7] + data1[:,8]) / (ref[6] + ref[7] + ref[8]) - 1)
+        energy[i,2] = max(y2)
+        energy[i,3] = max(y3+y2)
+
+    xs = [energy[:,0]]*2
+    ys = [energy[:,2],energy[:,3]]
+    colors=["k","m"]
+    linestyles=["-"]*2
+    markers=['o']*2
+    labels=[r"v$_2$", r"v$_2$+v$_3$"]
+    clp.plotone(xs, ys, axes[1,2], colors=colors, linestyles=linestyles, markers=markers, labels=labels, lw=1, showlegend=True,
+                xlabel=r"$\omega_{\mathrm{c}}$ [cm$^{-1}$]", ylabel=r"energy gain [k$_{\mathrm{B}}$T]", xlim=[1190,1610], ylim=[0,5], legendFontSize=10)
+    
+    axes[1,2].axvline(x=1465.5, linestyle='-.', color="0.5", alpha=0.5)
+    axes[1,2].text(1290, 0.7, r"$\omega_{\mathrm{c}}=1466$ cm$^{-1}$"+'\n'+r"max $|X_+^{(\rm{c})}|^4|X_+^{(\rm{B})}|^2$", fontsize=10, color="0.5")
+    axes[1,2].set_xticks([1200,1300,1400,1500,1600])
+    axes[1,2].set_yticks([0,1,2,3,4,5])
+    axes[1,2].text(0.01, 0.98, "(f)", transform=axes[1,2].transAxes, fontsize=12, fontweight='bold', va='top', ha='left', color="k")
+    
+    clp.subplots_adjust(hspace=0.3)
+    clp.adjust(savefile=f'./main_paper_figure/figure4.png', tight_layout=False)
 
 if __name__ == "__main__" :
     get_figure1()
     get_figure2()
     get_figure3()
     get_figure4()
-    get_figure5()

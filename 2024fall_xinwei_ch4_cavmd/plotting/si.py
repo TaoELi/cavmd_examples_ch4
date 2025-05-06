@@ -540,6 +540,45 @@ def get_s12():
     clp.adjust(savefile=f'./si_figure/s12.png', tight_layout=False)
 
 def get_s13():
+    color_list   = ['violet', 'blue', 'green', 'greenyellow', 'gold', 'orange', 'red', 'brown', 'black', 'cyan']
+    axes = clp.initialize(1, 5, width=12, height=12/5*0.618*1.1, LaTeX=True, fontsize=12, sharey=True)
+    for i in range(5):
+        data1 = np.loadtxt(f'./plotting_data/110k_noneqcoord_6e-3_gaussian_density/noeqcoord_gaussian_new_6e-3_110k_density_cavity_n400v{i}_E0_6e-4.out')
+        data2 = np.loadtxt(f'./plotting_data/110k_noneqcoord_6e-3_gaussian_density/eqcoord_110k_density_cavity_n400v{i}_E0_6e-4.out')
+        row, col = np.shape(data2)
+        te  = np.linspace(0, 20, row)
+        ref = np.mean(data2, axis=0)
+        y1  = 1 * (data1[:,0] / ref[0] - 1)
+        y2  = 2 * ((data1[:,1] + data1[:,2]) / (ref[1] + ref[2]) - 1)
+        y3  = 3 * ((data1[:,3] + data1[:,4] + data1[:,5]) / (ref[3] + ref[4] + ref[5]) - 1)
+        y4  = 3 * ((data1[:,6] + data1[:,7] + data1[:,8]) / (ref[6] + ref[7] + ref[8]) - 1)
+        xs = [te, te, te, te]
+        ys = [smooth(y1), smooth(y2), smooth(y3), smooth(y4)]
+        colors_local = [color_list[7], color_list[8], color_list[9], color_list[6]]
+        labels_local = [r"v$_%d$" %i for i in range(1,5)]
+        axes[i].axvspan(xmin=1.75, xmax=2.25, ymin=0, ymax=15, color='orange', alpha=0.4)
+        axes[i].axvspan(xmin=1.25, xmax=2.75, ymin=0, ymax=15, color='orange', alpha=0.3)
+        axes[i].set_xticks([0,5,10,15,20])
+        axes[i].set_yticks([0,1,2,3])
+        clp.plotone(xs, ys, axes[i], colors=colors_local, labels=labels_local, lw=1, showlegend=True if i == 0 else False, legendloc=(0.7, 0.35),
+                    xlabel="time [ps]", ylabel=r"energy gain [$\mathrm{k_BT}$]" if i == 0 else None, xlim=[0, 20], ylim=[-0.1,3], legendFontSize=6)
+
+    # add label of the figures
+    x0, y0 = 0.98, 0.97
+    label1List = ["(a)", "(b)", "(c)", "(d)", "(e)"]
+    uplist = [1619.8, 1619.8, 1619.8, 1619.8, 1619.8] # for density figure
+    coupling1List = [r"excite UP = %d cm$^{-1}$" %up for up in uplist]
+    density = [400/(2.9144683314136138**3*2**n) for n in range(5)]
+    labels = [r"$\rho = $ %.2f nm$^{-3}$" % density[i] for i in range(5)]
+    epsilon = [r"$\quad\widetilde{\varepsilon} = $ 3.0 $\times 10^{-4}$ a.u."]*5
+    coupling1List = [coupling1List[i] + "\n" + epsilon[i] + "\n" + labels[i] for i in range(5)]
+    for i in range(5):
+        axes[i].text(x0, y0, label1List[i], transform=axes[i].transAxes, fontsize=12, fontweight='bold', va='top', ha='right', color="k")
+        axes[i].text(0.05, y0-0.02, coupling1List[i], transform=axes[i].transAxes, fontsize=9, fontweight='bold', va='top', ha='left', color="k")
+        
+    clp.adjust(savefile=f'./si_figure/s13.png', tight_layout=False)
+
+def get_s14():
     ax = clp.initialize(1, 1, width=4.3, LaTeX=True, fontsize=12)
     xs, ys = [], []
     e0list = [0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5]
@@ -574,9 +613,9 @@ def get_s13():
     ax.text(959, 11.3, "$v_4$", fontsize=8, color="0.5")
 
     plt.rcParams["axes.axisbelow"] = False
-    clp.adjust(savefile=f"./si_figure/s13.png")
+    clp.adjust(savefile=f"./si_figure/s14.png")
 
-def get_s14():
+def get_s15():
     color_list   = ['violet', 'blue', 'green', 'greenyellow', 'gold', 'orange', 'red', 'brown', 'black', 'cyan']
     axes = clp.initialize(2, 5, width=12, height=12/5*0.618*2.2, LaTeX=True, fontsize=12, sharey=True)
     e0list = [0.5,1,1.5,2,2.5,3,3.5,4,4.5,5]
@@ -622,7 +661,7 @@ def get_s14():
         axes[1,i].text(x0, y0, label2List[i], transform=axes[1,i].transAxes, fontsize=12, fontweight='bold', va='top', ha='right', color="k")
         axes[1,i].text(0.05, y0-0.02, coupling2List[i], transform=axes[1,i].transAxes, fontsize=9, fontweight='bold', va='top', ha='left', color="k")
         
-    clp.adjust(savefile=f'./si_figure/s14.png', tight_layout=False)
+    clp.adjust(savefile=f'./si_figure/s15.png', tight_layout=False)
 
 def plot_IR():
     ax = clp.initialize(1, 1, width=4.3*0.618*0.618*2, height=4.3*0.618*2.2, LaTeX=True, fontsize=10)
@@ -654,7 +693,7 @@ def plot_IR():
     #ax.text(1495, 1.89, "UP", fontsize=10, color="0.5")
     plt.rcParams["axes.axisbelow"] = False
     ax.text(0.12, 0.98, "(a)", transform=ax.transAxes, fontsize=12, fontweight='bold', va='top', ha='right', color="k")
-    clp.adjust(savefile=f"./si_figure/temp1_s15.png")
+    clp.adjust(savefile=f"./si_figure/temp1_s16.png")
 
 def get_temp():
     cmap = plt.colormaps["plasma"]
@@ -749,20 +788,20 @@ def get_temp():
     axes[1,0].set_xticks([0,5,10,15])
     axes[1,1].set_xticks([0,5,10,15])
 
-    clp.adjust(savefile=f'./si_figure/temp2_s15.png', tight_layout=False)
+    clp.adjust(savefile=f'./si_figure/temp2_s16.png', tight_layout=False)
 
-def get_s15():
+def get_s16():
 
     plot_IR()
     get_temp()
-    fig1 = image.open('./si_figure/temp1_s15.png')
-    fig2 = image.open('./si_figure/temp2_s15.png')
+    fig1 = image.open('./si_figure/temp1_s16.png')
+    fig2 = image.open('./si_figure/temp2_s16.png')
 
     fix_size = 923
     new_fig = image.new("RGB", (fix_size+fig2.width, max(fig1.height,fig2.height)), (255,255,255))
     new_fig.paste(fig1, (0, max(fig1.height,fig2.height)-fig1.height))
     new_fig.paste(fig2, (fix_size, max(fig1.height,fig2.height)-fig2.height))
-    new_fig.save('./si_figure/s15.png')
+    new_fig.save('./si_figure/s16.png')
 
 if __name__ == "__main__":
     get_s1()
@@ -780,3 +819,4 @@ if __name__ == "__main__":
     get_s13()
     get_s14()
     get_s15()
+    get_s16()

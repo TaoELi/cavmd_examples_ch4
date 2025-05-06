@@ -183,6 +183,7 @@ def plotone(
     legendloc=None,
     legendFaceColor="inherit",
     legendEdgeColor="inherit",
+    ncols=1,
     rainbowColor=False,
     colorMap=None,
     colorMap_startpoint=0,
@@ -281,7 +282,7 @@ def plotone(
         ax.legend(fontsize=legendFontSize, #markerscale=legendFontSize,
             frameon=legndFrameOn, fancybox=legendFancyBox,
             facecolor=legendFaceColor, edgecolor=legendEdgeColor,
-            loc=legendloc)
+            loc=legendloc, ncols=ncols)
     return lines
 
 
@@ -327,7 +328,7 @@ def broken_y(ax, ax2, d=0.015, ymin_0=0, ymax_0=0.22, ymin_1=0.78, ymax_1=1.0):
     ax2.plot((1 - d, 1 + d), (1 - d, 1 + d), **kwargs)  # bottom-right diagonal
 
 
-def subplots_adjust(left=0.1, right=0.9, bottom=0.1, top=0.9, wspace=0.2):
+def subplots_adjust(left=0.1, right=0.9, bottom=0.1, top=0.9, wspace=0.2, hspace=0.3):
     '''
     Adjust the subplot layout for each figure
     :param left:
@@ -337,7 +338,7 @@ def subplots_adjust(left=0.1, right=0.9, bottom=0.1, top=0.9, wspace=0.2):
     :param wspace:
     :return:
     '''
-    plt.subplots_adjust(left=left, right=right, bottom=bottom, top=top, wspace=wspace)
+    plt.subplots_adjust(left=left, right=right, bottom=bottom, top=top, wspace=wspace, hspace=hspace)
 
 
 def adjust(
