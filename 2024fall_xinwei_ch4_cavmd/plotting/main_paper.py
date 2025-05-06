@@ -193,7 +193,7 @@ def get_figure1():
     draw_new_fig.text((10+figc.width, new_figup.height+20), "(d)", font=font_new_fig, fill='black')
     draw_new_fig.text((30, new_figup.height+new_figmiddle.height+20), "(e)", font=font_new_fig, fill='black')
     draw_new_fig.text((20+1250, new_figup.height+new_figmiddle.height+20), "(f)", font=font_new_fig, fill='black')
-    new_fig.save('./main_paper_figure/figure1.png')
+    new_fig.save('./main_paper_figure/figure1.pdf')
 
 def get_figure2():
     cmap = plt.colormaps["plasma"]
@@ -281,7 +281,7 @@ def get_figure2():
             axes[0, i].set_yticklabels([])
             axes[1, i].set_yticklabels([])
             axes[2, i].set_yticklabels([])
-    clp.adjust(savefile=f'./main_paper_figure/figure2.png', tight_layout=False)
+    clp.adjust(savefile=f'./main_paper_figure/figure2.pdf', tight_layout=False)
 
 def size_denpendence():
 
@@ -393,7 +393,7 @@ def get_figure3():
     font_new_fig = font.truetype('Arial.ttf', size=50)
     draw_new_fig.text((10, 0), "(a)", font=font_new_fig, fill='black')
     draw_new_fig.text((10+fig1.width, 0), "(b)", font=font_new_fig, fill='black')
-    new_fig.save('./main_paper_figure/figure3.png')
+    new_fig.save('./main_paper_figure/figure3.pdf')
 
 def get_figure4():
     color_list   = ['violet', 'blue', 'green', 'greenyellow', 'gold', 'orange', 'red', 'brown', 'black', 'cyan']
@@ -528,7 +528,7 @@ def get_figure4():
     axes[1,2].text(0.01, 0.98, "(f)", transform=axes[1,2].transAxes, fontsize=12, fontweight='bold', va='top', ha='left', color="k")
     
     clp.subplots_adjust(hspace=0.3)
-    clp.adjust(savefile=f'./main_paper_figure/figure4.png', tight_layout=False)
+    clp.adjust(savefile=f'./main_paper_figure/figure4.pdf', tight_layout=False)
 
 if __name__ == "__main__" :
     get_figure1()
